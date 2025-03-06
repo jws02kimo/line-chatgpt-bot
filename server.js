@@ -17,7 +17,8 @@ app.get("/", (req, res) => {
 });
 
 // 處理 LINE webhook
-app.post("/webhook", async (req, res) => {
+app.post("/webhook", console.log("📩 收到 LINE Webhook 請求", req.body);
+async (req, res) => {
     res.status(200).send({ status: "ok" });
     const events = req.body.events;
     for (let event of events) {
