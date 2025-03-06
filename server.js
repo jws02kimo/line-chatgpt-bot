@@ -1,6 +1,5 @@
 const express = require("express");
 const axios = require("axios");
-const bodyParser = require("body-parser");
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -9,7 +8,7 @@ const port = process.env.PORT || 3000;
 const LINE_ACCESS_TOKEN = process.env.LINE_ACCESS_TOKEN;
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 
-app.use(express.json());
+app.use(express.json());  // ✅ 確保 Vercel 正確解析 JSON
 
 // 測試首頁
 app.get("/", (req, res) => {
@@ -17,9 +16,10 @@ app.get("/", (req, res) => {
 });
 
 // 處理 LINE webhook
-app.post("/webhook", console.log("📩 收到 LINE Webhook 請求", req.body);
-async (req, res) => {
+app.post("/webhook", async (req, res) => {
+    console.log("📩 收到 LINE Webhook 請求", req.body);  // ✅ 確保 Vercel 有收到請求
     res.status(200).send({ status: "ok" });
+
     const events = req.body.events;
     for (let event of events) {
         if (event.type === "message" && event.message.type === "text") {
@@ -46,7 +46,7 @@ async function getChatGPTReply(message) {
         });
         return response.data.choices[0].message.content;
     } catch (error) {
-        console.error("ChatGPT API Error:", error);
+        console.error("❌ ChatGPT API Error:", error);
         return "抱歉，我暫時無法回應，請稍後再試。";
     }
 }
@@ -64,10 +64,10 @@ async function replyToUser(replyToken, text) {
             }
         });
     } catch (error) {
-        console.error("LINE API Error:", error);
+        console.error("❌ LINE API Error:", error);
     }
 }
 
 app.listen(port, () => {
-    console.log(`Server running on port ${port}`);
+    console.log(`✅ Server is running on port ${port}`);
 });
