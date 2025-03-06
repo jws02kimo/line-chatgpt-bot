@@ -9,7 +9,7 @@ const port = process.env.PORT || 3000;
 const LINE_ACCESS_TOKEN = process.env.LINE_ACCESS_TOKEN;
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 
-app.use(bodyParser.json());
+app.use(express.json());
 
 // 測試首頁
 app.get("/", (req, res) => {
